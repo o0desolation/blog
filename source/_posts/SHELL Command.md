@@ -1,4 +1,11 @@
-## SHELL Command Collection
+---
+title: SHELL Command Collection
+date: 2019-12-24 15:30:51
+categories: 
+- Linux
+tags: 
+- Linux
+---
 
 + ssh
 

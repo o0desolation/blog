@@ -1,4 +1,11 @@
-## CentOS开启BBR加速
+---
+title: CentOS开启BBR加速
+date: 2019-12-24 15:30:51
+categories: 
+- Linux
+tags: 
+- Linux
+---
 
 #### 查看系统版本
 
