@@ -102,8 +102,8 @@ menu:
   #commonweal: /404/ || heartbeat
 
 # Enable/Disable menu icons.
-menu_icons:
-  enable: false
+# menu_icons:
+#   enable: false
 
 
 # ---------------------------------------------------------------
