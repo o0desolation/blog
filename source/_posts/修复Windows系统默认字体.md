@@ -7,9 +7,8 @@ tags:
 - Windows
 - 注册表
 ---
-# Windows 默认字体
 
-主要用于系统字体修复，以注册表运行即可
+用于系统字体修复，以注册表运行即可
 
 ```
 Windows Registry Editor Version 5.00
