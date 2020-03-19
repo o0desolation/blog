@@ -7,7 +7,6 @@ tags:
 - React
 ---
 
-
 ## 环境搭建
 
 ### 安装React
@@ -228,21 +227,34 @@ npm run electron
      ipcMain.on("minimize", () => {
        win.minimize();
      });
+   
      ipcMain.on("isMaximized",(event,arg) => {
        if(win.isMaximized())
          event.returnValue = true
        else
          event.returnValue = false
      })
+   
      ipcMain.on("maximize", () => {
        win.maximize();
      });
+     
      ipcMain.on("unmaximize",() => {
        win.unmaximize();
      })
+   
      ipcMain.on("close", () => {
        win.close();
      });
+   
+     //双击标题栏也可改变最大化状态，所以需要向渲染进程发送消息改变图标
+     win.on("maximize",() => {
+       win.webContents.send("maximized")
+     })
+   
+     win.on("unmaximize",() => {
+       win.webContents.send("unmaximized")
+     })
    };
    module.exports = ipc;
    ```
@@ -265,15 +277,26 @@ npm run electron
    import Minimize from "react-icons/lib/md/remove";
    import Maximize from "react-icons/lib/md/crop-square";
    import Close from "react-icons/lib/md/close";
-   import UnMaximize from 'react-icons/lib/md/filter-none';
+   import UnMaximize from "react-icons/lib/md/filter-none";
    const electron = window.require("electron");
    
    const WindowTop = () => {
      const [isMaximized, setIsMaximized] = useState(null);
    
+     const mainProcessListner = () => {
+       electron.ipcRenderer.on("maximized", () => {
+         setIsMaximized(true);
+       });
+   
+       electron.ipcRenderer.on("unmaximized", () => {
+         setIsMaximized(false);
+       });
+     };
+   
      useEffect(() => {
        setIsMaximized(electron.ipcRenderer.send("isMaximized"));
-     },[]);
+       mainProcessListner();
+     }, []);
    
      const minHandler = () => {
        electron.ipcRenderer.send("minimize");
@@ -281,11 +304,10 @@ npm run electron
      const maxHandler = () => {
        if (!isMaximized) {
          electron.ipcRenderer.send("maximize");
-         setIsMaximized(true)
-       }
-       else {
+         setIsMaximized(true);
+       } else {
          electron.ipcRenderer.send("unmaximize");
-         setIsMaximized(false)
+         setIsMaximized(false);
        }
      };
      const closeHandler = () => {
@@ -297,7 +319,7 @@ npm run electron
            <Minimize />
          </button>
          <button onClick={maxHandler}>
-           {isMaximized?<UnMaximize/>:<Maximize />}
+           {isMaximized ? <UnMaximize /> : <Maximize />}
          </button>
          <button onClick={closeHandler}>
            <Close />
@@ -346,11 +368,11 @@ npm run electron
    @import url('../../../App.css');
    .top {
      width: 100%;
+     height: 30px;
      display: flex;
      justify-content: flex-end;
-     align-items: center;
      background-color:var(--primary-color);
-     -webkit-app-region: drag;				//标题栏拖曳，连同子元素一起设置
+     -webkit-app-region: drag;
    }
    
    button {
@@ -360,7 +382,7 @@ npm run electron
      color: aliceblue;
      width: 50px;
      outline: none;
-     -webkit-app-region: no-drag;			//取消按钮拖曳，否则按钮无法点击
+     -webkit-app-region: no-drag;
    }
    
    button:hover {
