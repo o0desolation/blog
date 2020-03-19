@@ -28,7 +28,9 @@ npm i electron --save-dev
 
 
 
-可能会出现卡在node install.js的情况，原因是淘宝镜像的资源路径和官方的资源路径不同。淘宝的镜像路径是http://npm.taobao.org/mirrors/electron/8.1.1/，而electron官方默认的路径是http://npm.taobao.org/mirrors/electron/v8.1.1/
+可能会出现卡在node install.js的情况，原因是淘宝镜像的资源路径和官方的资源路径不同。
+淘宝的镜像路径是http://npm.taobao.org/mirrors/electron/8.1.1/
+而electron默认的路径是http://npm.taobao.org/mirrors/electron/v8.1.1/
 
 + 解决方案一：
 
